@@ -55,18 +55,23 @@ directory "~/Projects/github/template/template/docsrc", "docsrc"
 run "yarn add --dev @antora/cli@3.1.0 @antora/site-generator@3.1.0" 
 run "yarn add bootstrap@5"
 run "yarn add @popperjs/core@2"
+run "yarn add @hotwire/stimulus"
 
 run "yarn add jszip"
 run "yarn add pdfmake"
 run "yarn add datatables.net-bs5"
 run "yarn add datatables.net-buttons-bs5"
 run "yarn add datatables.net-responsive-bs5"
+run "yarn add sass"
+
+run "nvm install nodemon -g"
 
 # run generators
 run "bin/rails turbo:install"
 run "bin/rails turbo:install:redis"
 run "bin/rails css:install:bootstrap"
 run "bin/rails javascript:install:esbuild"
+run "bin/rails stimulus:install"
 
 generate "rspec:install"
 generate "simple_form:install --bootstrap --skip"
