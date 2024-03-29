@@ -1,0 +1,3 @@
+<footer class="footer">
+  <span>Wolfgang Barth (C) <%= Date.current.strftime('%Y') %></span>
+</footer>

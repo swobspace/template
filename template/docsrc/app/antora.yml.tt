@@ -1,5 +1,5 @@
-name: app
-title: App
+name: <%= Rails.application.class.module_parent.to_s.underscore %>
+title: <%= Rails.application.class.module_parent.to_s %>
 version: ~
 nav:
 - modules/ROOT/nav.adoc
