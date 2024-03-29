@@ -1,0 +1,19 @@
+name: app
+title: App
+version: ~
+nav:
+- modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    lang: de-DE
+    author: Wolfgang Barth
+    Email: wob@swobspace.net
+    revision: 0.0.1
+    revdate: <%= Date.current.strftime('%F') %>
+    rights:  Copyright <%= Date.current.strftime('%Y') %> (C) Wolfgang Barth
+    language: de-DE
+    toc-title: Inhalt
+    chapter-label: Kapitel
+    figure-caption: Abbildung
+

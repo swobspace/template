@@ -1,0 +1,13 @@
+name: devnotes
+title: DevNotes
+version: ~
+nav:
+- modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    author: Wolfgang Barth
+    Email: wob@swobspace.net
+    revision: 0.0.1
+    revdate: <%= Date.current.strftime('%F') %>
+    rights:  Copyright <%= Date.current.strftime('%Y') %> (C) Wolfgang Barth

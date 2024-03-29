@@ -1,0 +1,3 @@
+= Home
+:author: Wolfgang Barth
+:revdate: <%= Date.current.strftime("%F") %>
