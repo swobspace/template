@@ -1,0 +1,24 @@
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - vars/secure.yml
+  vars:
+    postgresql_databases:
+      - name: <%= Rails.application.class.module_parent.to_s.underscore %>_development
+        owner: <%= Rails.application.class.module_parent.to_s.underscore %>
+        lc_collate: de_DE.UTF-8
+        lc_ctype: de_DE.UTF-8
+
+      - name: <%= Rails.application.class.module_parent.to_s.underscore %>_test
+        owner: <%= Rails.application.class.module_parent.to_s.underscore %>
+        lc_collate: de_DE.UTF-8
+        lc_ctype: de_DE.UTF-8
+
+    postgresql_users:
+      - name: <%= Rails.application.class.module_parent.to_s %>
+        password: "{{ postgresql_user_password }}"
+        encrypted: yes
+
+  roles:
+    - role: geerlingguy.postgresql
+      become: yes

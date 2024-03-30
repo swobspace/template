@@ -1,7 +1,9 @@
 #
 # rails application template
 #
-@app_name ||= Rails.application.class.module_parent.to_s.underscore
+require 'securerandom'
+@postgresql_user_password = SecureRandom.base64(32)
+@secret_key_base = SecureRandom.hex(128)
 #
 run 'bundle remove tzinfo-data'
 append_to_file 'Gemfile' do
@@ -49,12 +51,14 @@ inject_into_file 'config/application.rb', before: '  end' do
 end
 
 #
-# create antora doc tree
+# copying templates
 #
 directory "~/Projects/github/template/template/docs", "docs"
 directory "~/Projects/github/template/template/docsrc", "docsrc"
 directory "~/Projects/github/template/template/app", "app"
 directory "~/Projects/github/template/template/config", "config"
+directory "~/Projects/github/template/template/ansible", "ansible"
+template "~/Projects/github/template/template/.env.development.local.tt", ".env.development.local"
 
 # add some npms
 run "yarn add --dev @antora/cli@3.1.0 @antora/site-generator@3.1.0" 
@@ -86,13 +90,13 @@ generate "wobapphelpers:install"
 # wobauth
 generate "cancan:ability"
 
-create_file 'app/models/wobauth/user.rb' do <<~'WOBAUTHUSER'
+create_file 'app/models/wobauth/user.rb' do <<~WOBAUTHUSER
   require_dependency 'wobauth/concerns/models/user_concerns'
   class Wobauth::User < ActiveRecord::Base
     # dependencies within wobauth models
     include UserConcerns
 
-    # devise *#{@app_name}.devise_modules 
+    # devise *#{app_name}.devise_modules 
     # or ... basic usage:
     devise :database_authenticatable
 
@@ -105,14 +109,14 @@ end
 generate "wobauth:install"
 run "bin/rake wobauth:install:migrations"
 
-create_file 'config/initializers/locales.rb' do <<~'LOCALES'
+create_file 'config/initializers/locales.rb' do <<~LOCALES
   Rails.application.config.i18n.available_locales = [:de, :en]
   Rails.application.config.i18n.default_locale = :de
   Rails.application.config.time_zone = 'Berlin'
   LOCALES
 end
 
-create_file "config/locales/#{@app_name}.de.yml" do <<-'MYLOCALE'
+create_file "config/locales/#{app_name}.de.yml" do <<-MYLOCALE
 de:
   activerecord:
     models:
