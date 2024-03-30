@@ -1,6 +1,8 @@
 #
 # rails application template
 #
+@app_name ||= Rails.application.class.module_parent.to_s.underscore
+#
 run 'bundle remove tzinfo-data'
 append_to_file 'Gemfile' do
   <<~GEMS
@@ -13,6 +15,7 @@ append_to_file 'Gemfile' do
   gem 'font-awesome-sass', '~> 6.0'
   gem 'view_component'
   gem 'cancancan'
+  gem "wobauth", git: "https://github.com/swobspace/wobauth.git", branch: "master"
 
   group :test, :development do
     gem 'rspec-rails'
@@ -78,6 +81,73 @@ generate "simple_form:install --bootstrap --skip"
 
 generate "wobapphelpers:install"
 
+# wobauth
+generate "cancan:ability"
+
+create_file 'app/models/wobauth/user.rb' do <<~'WOBAUTHUSER'
+  require_dependency 'wobauth/concerns/models/user_concerns'
+  class Wobauth::User < ActiveRecord::Base
+    # dependencies within wobauth models
+    include UserConcerns
+
+    # devise *#{@app_name}.devise_modules 
+    # or ... basic usage:
+    devise :database_authenticatable
+
+    validates :password, confirmation: true
+  end
+
+  WOBAUTHUSER
+end
+
+generate "wobauth:install"
+run "bin/rake wobauth:install:migrations"
+
+create_file 'config/initializers/locales.rb' do <<~'LOCALES'
+  Rails.application.config.i18n.available_locales = [:de, :en]
+  Rails.application.config.i18n.default_locale = :de
+  Rails.application.config.time_zone = 'Berlin'
+  LOCALES
+end
+
+create_file "config/locales/#{@app_name}.de.yml" do <<-'MYLOCALE'
+de:
+  activerecord:
+    models:
+      user: User
+
+  attributes:
+    description: Beschreibung
+    displayname: Anzeigename
+    givenname: Vorname
+    name: Name
+    sn: Nachname
+    username: Username
+
+  controller:
+    users: Benutzer
+MYLOCALE
+end
+
+insert_into_file 'app/controllers/application_controller.rb', after: "class ApplicationController < ActionController::Base\n" do <<-APPCONTROLLER
+  # -- breadcrumbs
+  include Wobapphelpers::Breadcrumbs
+  before_action :add_breadcrumb_index, only: [:index]
+  # before_action :set_paper_trail_whodunnit
+
+  # -- flash responder
+  self.responder = Wobapphelpers::Responders
+  respond_to :html, :json, :js
+
+  helper_method :add_breadcrumb
+  protect_from_forgery prepend: true
+APPCONTROLLER
+end
+
+insert_into_file 'app/helpers/application_helper.rb', after: "module ApplicationHelper\n" do <<-APPHELPER
+  include Wobapphelpers::Helpers::All
+APPHELPER
+end
 
 after_bundle do
   # at last
