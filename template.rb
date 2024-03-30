@@ -3,7 +3,7 @@
 #
 require 'securerandom'
 @postgresql_user_password = SecureRandom.base64(32)
-@secret_key_base = SecureRandom.hex(128)
+@secret_key_base = SecureRandom.hex(64)
 #
 run 'bundle remove tzinfo-data'
 append_to_file 'Gemfile' do
