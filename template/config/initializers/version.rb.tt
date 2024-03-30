@@ -1,0 +1,6 @@
+module <%= Rails.application.class.module_parent.to_s %>
+  VERSION     = '0.0.1-dev'.freeze
+  RELEASEDATE = '<%= Date.current.strftime('%F') %>'.freeze
+end
+
+### DONT FORGET app/views/pages/Changelog.adoc ###

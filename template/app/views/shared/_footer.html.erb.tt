@@ -1,0 +1,5 @@
+<%%= ( current_user.nil? ) ? "not logged in" : current_user.username %> |
+<%%= Time.now.strftime("%Y-%m-%d %H:%Mh") %> |
+<%%= "<%= Rails.application.class.module_parent.to_s %>"  + '::' + 
+    controller.controller_name + '::' +
+              controller.action_name %> 

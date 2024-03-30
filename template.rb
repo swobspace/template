@@ -53,6 +53,8 @@ end
 #
 directory "~/Projects/github/template/template/docs", "docs"
 directory "~/Projects/github/template/template/docsrc", "docsrc"
+directory "~/Projects/github/template/template/app", "app"
+directory "~/Projects/github/template/template/config", "config"
 
 # add some npms
 run "yarn add --dev @antora/cli@3.1.0 @antora/site-generator@3.1.0" 
