@@ -15,7 +15,6 @@ append_to_file 'Gemfile' do
   gem 'wobapphelpers', git: 'https://github.com/swobspace/wobapphelpers',
                      branch: 'master'
   gem 'rails-i18n', '~> 7.0.0'
-  gem 'font-awesome-sass', '~> 6.0'
   gem 'view_component'
   gem 'cancancan'
   gem "wobauth", git: "https://github.com/swobspace/wobauth.git", branch: "master"
@@ -117,6 +116,8 @@ run "bin/rails turbo:install:redis"
 run "bin/rails css:install:bootstrap"
 run "bin/rails javascript:install:esbuild"
 run "bin/rails stimulus:install"
+run "bin/rails action_text:install"
+run "bundle install"
 
 generate "rspec:install"
 generate "simple_form:install --bootstrap --skip"
