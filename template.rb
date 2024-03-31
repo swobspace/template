@@ -62,6 +62,10 @@ inject_into_file 'config/application.rb', before: '  end' do
       g.jbuilder          false
     end
 
+    config.after_initialize do
+      Rails.application.reload_routes!
+    end
+
     config.responders.error_status = :unprocessable_entity
     config.responders.redirect_status = :see_other
   CODE
@@ -72,6 +76,12 @@ end
 #
 generate(:controller, 'home', 'index')
 route "root to: 'home#index'"
+
+inject_into_file 'config/routes.rb', before: 'end' do
+  <<~ROUTES
+    mount Wobauth::Engine, at: '/auth'
+  ROUTES
+end
 
 #
 # copying templates
