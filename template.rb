@@ -67,21 +67,29 @@ inject_into_file 'config/application.rb', before: '  end' do
 end
 
 #
+# generate a home page before copying scaffold templates
+#
+generate(:controller, 'home', 'index')
+route "root to: 'home#index'"
+
+#
 # copying templates
 #
 directory "~/Projects/github/template/template/docs", "docs"
 directory "~/Projects/github/template/template/docsrc", "docsrc"
 directory "~/Projects/github/template/template/app", "app"
-directory "~/Projects/github/template/template/lib", "lib"
 directory "~/Projects/github/template/template/config", "config"
 directory "~/Projects/github/template/template/ansible", "ansible"
 template "~/Projects/github/template/template/.env.development.local.tt", ".env.development.local"
+
+# scaffold templates: don't process .tt in lib/templates, use cp
+run 'cp -R ~/Projects/github/template/template/lib/templates lib/.'
 
 # add some npms
 run "yarn add --dev @antora/cli@3.1.0 @antora/site-generator@3.1.0"
 run "yarn add bootstrap@5"
 run "yarn add @popperjs/core@2"
-run "yarn add @hotwire/stimulus"
+run "yarn add @hotwired/stimulus"
 
 run "yarn add jszip"
 run "yarn add pdfmake"
@@ -101,6 +109,7 @@ run "bin/rails stimulus:install"
 
 generate "rspec:install"
 generate "simple_form:install --bootstrap --skip"
+remove_file 'lib/templates/erb/scaffold/_form.html.erb'
 
 generate "wobapphelpers:install"
 
