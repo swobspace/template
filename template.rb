@@ -4,6 +4,7 @@
 require 'securerandom'
 @postgresql_user_password = SecureRandom.base64(32)
 @secret_key_base = SecureRandom.hex(64)
+@app_name ||= Rails.application.class.module_parent.to_s.underscore
 #
 run 'bundle remove tzinfo-data'
 append_to_file 'Gemfile' do
