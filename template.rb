@@ -11,7 +11,7 @@ append_to_file 'Gemfile' do
 
   # --- TEMPLATE START ---
   gem 'simple_form'
-  gem 'wobapphelpers', git: 'https://github.com/swobspace/wobapphelpers', 
+  gem 'wobapphelpers', git: 'https://github.com/swobspace/wobapphelpers',
                      branch: 'master'
   gem 'rails-i18n', '~> 7.0.0'
   gem 'font-awesome-sass', '~> 6.0'
@@ -39,6 +39,19 @@ end
 
 run "bundle install"
 
+inject_into_file 'config/application.rb', before: '^module' do
+  <<~DOTENV
+    # Load dotenv only in development or test environment
+    if ['development', 'test'].include? ENV['RAILS_ENV']
+      Dotenv::Railtie.load
+    end
+  DOTENV
+end
+
+gsub_file 'config/application.rb', /config.autoload_lib.*$/ do
+  "config.autoload_lib(ignore: %w(assets tasks templates))"
+end
+
 inject_into_file 'config/application.rb', before: '  end' do
   <<-CODE
     config.generators do |g|
@@ -47,6 +60,9 @@ inject_into_file 'config/application.rb', before: '  end' do
       g.test_framework    :rspec
       g.jbuilder          false
     end
+
+    config.responders.error_status = :unprocessable_entity
+    config.responders.redirect_status = :see_other
   CODE
 end
 
@@ -61,7 +77,7 @@ directory "~/Projects/github/template/template/ansible", "ansible"
 template "~/Projects/github/template/template/.env.development.local.tt", ".env.development.local"
 
 # add some npms
-run "yarn add --dev @antora/cli@3.1.0 @antora/site-generator@3.1.0" 
+run "yarn add --dev @antora/cli@3.1.0 @antora/site-generator@3.1.0"
 run "yarn add bootstrap@5"
 run "yarn add @popperjs/core@2"
 run "yarn add @hotwire/stimulus"
@@ -96,7 +112,7 @@ create_file 'app/models/wobauth/user.rb' do <<~WOBAUTHUSER
     # dependencies within wobauth models
     include UserConcerns
 
-    # devise *#{app_name}.devise_modules 
+    # devise *#{app_name}.devise_modules
     # or ... basic usage:
     devise :database_authenticatable
 
