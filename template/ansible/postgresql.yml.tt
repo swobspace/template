@@ -4,6 +4,8 @@
     - vars/secure.yml
   vars:
     postgres_users_no_log: false
+    # don't touch pg_hba.conf with empty list
+    postgresql_hba_entries: {}
     postgresql_users:
       - name: <%= Rails.application.class.module_parent.to_s.underscore %>
         password: "{{ postgresql_user_password }}"
