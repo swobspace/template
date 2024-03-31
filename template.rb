@@ -72,6 +72,7 @@ end
 directory "~/Projects/github/template/template/docs", "docs"
 directory "~/Projects/github/template/template/docsrc", "docsrc"
 directory "~/Projects/github/template/template/app", "app"
+directory "~/Projects/github/template/template/lib", "lib"
 directory "~/Projects/github/template/template/config", "config"
 directory "~/Projects/github/template/template/ansible", "ansible"
 template "~/Projects/github/template/template/.env.development.local.tt", ".env.development.local"
