@@ -7,17 +7,17 @@
     # don't touch pg_hba.conf with empty list
     postgresql_hba_entries: {}
     postgresql_users:
-      - name: <%= Rails.application.class.module_parent.to_s.underscore %>
+      - name: <%= @app_name %>
         password: "{{ postgresql_user_password }}"
         encrypted: yes
     postgresql_databases:
-      - name: <%= Rails.application.class.module_parent.to_s.underscore %>_development
-        owner: <%= Rails.application.class.module_parent.to_s.underscore %>
+      - name: <%= @app_name %>_development
+        owner: <%= @app_name %>
         lc_collate: de_DE.UTF-8
         lc_ctype: de_DE.UTF-8
 
-      - name: <%= Rails.application.class.module_parent.to_s.underscore %>_test
-        owner: <%= Rails.application.class.module_parent.to_s.underscore %>
+      - name: <%= @app_name %>_test
+        owner: <%= @app_name %>
         lc_collate: de_DE.UTF-8
         lc_ctype: de_DE.UTF-8
 
