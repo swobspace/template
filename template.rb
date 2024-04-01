@@ -92,6 +92,7 @@ directory "~/Projects/github/template/template/config", "config"
 directory "~/Projects/github/template/template/ansible", "ansible"
 template "~/Projects/github/template/template/.env.development.local.tt", ".env.development.local"
 
+create_link "public/docs", "../docs"
 # scaffold templates: don't process .tt in lib/templates, use cp
 run 'cp -R ~/Projects/github/template/template/lib/templates lib/.'
 
